@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "293423394011",
+    "project_id": "enduro-pap",
+    "storage_bucket": "enduro-pap.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:293423394011:android:1b35686503fff0e9d370fe",
+        "android_client_info": {
+          "package_name": "com.escaleira.EnduroApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "293423394011-mmfags85v8bnk8erih4i3gcn6m4o8d8u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmbY_KXERR-bNKkWY3khj3eTopcWY8DeY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "293423394011-mmfags85v8bnk8erih4i3gcn6m4o8d8u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "293423394011-cnquutefhp47rkvivtmq1a7m00ec0ck4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.escaleira.EnduroApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
