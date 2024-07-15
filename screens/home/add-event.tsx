@@ -87,7 +87,6 @@ export default function AddEventScreen({ navigation }: any) {
 
   const eventId = generateRandomString(20);
 
-  // add event to firestore database
   async function handleCreateEvent() {
     setLoading(true);
     try {
