@@ -95,7 +95,7 @@ export default function StickyBottomTabs() {
               <MediumText style={{ fontSize: 12 }}>you</MediumText>
             )}
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => setActiveTab("friends")}
             style={{
               backgroundColor: activeTab === "friends" ? "#fff" : "#eee",
@@ -111,7 +111,7 @@ export default function StickyBottomTabs() {
             ) : (
               <MediumText style={{ fontSize: 12 }}>friends</MediumText>
             )}
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         <TouchableOpacity

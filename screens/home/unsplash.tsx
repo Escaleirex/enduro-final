@@ -25,7 +25,7 @@ export default function AddUnsplashImage() {
   async function handleImageSearch() {
     setLoading(true);
     const data = await fetch(
-      `https://api.unsplash.com/search/photos?page=1&query=${query}&client_id=${UNSPLASH_ACCESS_KEY}`
+      `https://api.unsplash.com/search/photos?page=1&query=${query}&client_id=GM0x69N3d5UgBgXKqQQI64qMrtPO4YaPySLIZmMIODo`
     );
     const json = await data.json();
     const results = json.results;

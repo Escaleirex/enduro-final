@@ -11,7 +11,6 @@ export default function PersonalEvents({
   event_title,
   event_image,
   start_date,
-  start_time,
 }: any) {
   const [eta, setEta] = useState("");
 
@@ -20,7 +19,7 @@ export default function PersonalEvents({
       dayjs.extend(relativeTime);
       dayjs.extend(customParseFormat);
 
-      const dateTime = start_date + " " + start_time;
+      const dateTime = start_date;
       const calculatedEta = dayjs(dateTime, "DD MMMM YYYY ").fromNow();
       calculatedEta.includes("minutes")
         ? setEta("today")

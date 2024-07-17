@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -15,7 +16,6 @@ import {
 import { Input, PwdInput } from "../../components/ui/input";
 import { PrimaryButton } from "../../components/ui/button";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { useState } from "react";
 import {
   validateEmail,
   validateMatchPassword,
@@ -34,7 +34,7 @@ export default function SignupScreen() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState<string | null>("");
+  const [image, setImage] = useState<string | null>(null);
 
   const { navigate }: NavigationProp<AuthStackParamList> = useNavigation();
   const { screenWidth, screenHeight } = useDimensions();
@@ -53,84 +53,96 @@ export default function SignupScreen() {
   }
 
   async function handleSignup() {
-    // input validation
-    password === "" || email === "" || confirmPassword === "" || username === ""
-      ? showMessage({
-          message: "please fill in all fields!",
-          type: "danger",
-          icon: "danger",
-        })
-      : validateEmail(email)
-      ? validatePassword(password)
-        ? validateMatchPassword(password, confirmPassword)
-          ? await createAccount()
-          : showMessage({
-              message: "your passwords do not match!",
-              type: "danger",
-              icon: "danger",
-            })
-        : showMessage({
-            message: "your password is less than 8 characters!",
-            type: "danger",
-            icon: "danger",
-          })
-      : showMessage({
-          message: "make sure your email is in the right format!",
+    if (!username || !email || !password || !confirmPassword) {
+      showMessage({
+        message: "please fill in all fields!",
+        type: "danger",
+        icon: "danger",
+      });
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      showMessage({
+        message: "make sure your email is in the right format!",
+        type: "danger",
+        icon: "danger",
+      });
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      showMessage({
+        message: "your password is less than 8 characters!",
+        type: "danger",
+        icon: "danger",
+      });
+      return;
+    }
+
+    if (!validateMatchPassword(password, confirmPassword)) {
+      showMessage({
+        message: "your passwords do not match!",
+        type: "danger",
+        icon: "danger",
+      });
+      return;
+    }
+
+    await createAccount();
+  }
+
+  async function createAccount() {
+    setLoading(true);
+
+    try {
+      const credentials = await createUserWithEmailAndPassword(auth, email.trim(), password);
+      console.log('uid:', credentials.user.uid)
+      await addUserToDb(credentials.user.uid);
+      showMessage({
+        message: "account created successfully!",
+        type: "success",
+        icon: "success",
+      });
+      navigate("login");
+    } catch (error) {
+      if (error.code === "auth/email-already-in-use") {
+        showMessage({
+          message: "user already exists, go to login!",
           type: "danger",
           icon: "danger",
         });
-
-    // add user to firestore database
-    async function addUserToDb(uid: string) {
-      await setDoc(doc(db, "users/users", uid), {
-        email: email.trim(),
-        username: username,
-        avatar: image,
-      });
-    }
-
-    // create the user account in auth
-    async function createAccount() {
-      setLoading(true);
-
-      try {
-        await createUserWithEmailAndPassword(auth, email.trim(), password)
-          .then(async (credentials) => {
-            await addUserToDb(credentials?.user?.uid);
-            showMessage({
-              message: "account created successfully!",
-              type: "success",
-              icon: "success",
-            });
-            navigate("login");
-          })
-          .finally(() => {
-            setEmail("");
-            setPassword("");
-            setConfirmPassword("");
-            setUsername("");
-            setImage("");
-          })
-          .catch((error) => {
-            if (error.code === "auth/email-already-in-use") {
-              showMessage({
-                message: "user already exists, go to login!",
-                type: "danger",
-                icon: "danger",
-              });
-            }
-          });
-
-        setLoading(false);
-      } catch (e) {
+      } else {
         showMessage({
           message: "failed to create account!",
           type: "danger",
           icon: "danger",
         });
       }
+    } finally {
+      setLoading(false);
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setUsername("");
+      setImage(null);
     }
   }
+
+  async function addUserToDb(uid: string) {
+    try {
+      const docD = doc(db, "users", uid)
+      await setDoc(docD, {
+        email: email.trim(),
+        username: username,
+        avatar: image,
+      });
+      console.log("Document successfully written!");
+    } catch (error) {
+      console.error("Error writing document: ", error);
+      // Handle error appropriately (e.g., show error message to the user)
+    }
+  }  
 
   return (
     <ScrollView

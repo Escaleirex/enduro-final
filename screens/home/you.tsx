@@ -73,7 +73,7 @@ export default function YouTab({ sortBy }: Props) {
   async function fetchEventsByRecent() {
     try {
       const userQuery = query(
-        collection(db, "events/events"),
+        collection(db, "events"),
         where("user_uid", "==", user.uid)
       );
       const userEvents = onSnapshot(userQuery, (snapshot) => {
@@ -97,7 +97,7 @@ export default function YouTab({ sortBy }: Props) {
   async function fetchEventsByUpcoming() {
     try {
       const userQuery = query(
-        collection(db, "events/events"),
+        collection(db, "events"),
         where("user_uid", "==", user.uid),
         orderBy("start_date", "asc")
       );
@@ -135,17 +135,18 @@ export default function YouTab({ sortBy }: Props) {
         }}
       >
         <View>
-          <Ionicons name="ios-people" size={25} color={"aqua"} />
+          {/* <Ionicons name="ios-people" size={25} color={"aqua"} /> */}
         </View>
 
         <View style={{ flexDirection: "row", gap: 20, alignItems: "center" }}>
-          <Ionicons name="ios-chatbubbles-outline" size={25} color={"#000"} />
-          <Ionicons name="ios-notifications-outline" size={25} color={"#000"} />
+          {/* <Ionicons name="ios-chatbubbles-outline" size={25} color={"#000"} />
+          <Ionicons name="ios-notifications-outline" size={25} color={"#000"} /> */}
           <Ionicons
             onPress={() => navigate("settings")}
             name="ios-settings-outline"
             size={25}
             color={"#000"}
+            style={{ marginTop: 24, marginBottom: -24 }}
           />
         </View>
       </View>
@@ -249,10 +250,10 @@ export default function YouTab({ sortBy }: Props) {
                   width: "100%",
                 }}
               >
-                <Image
+                {/* <Image
                   source={require("../../assets/empty.png")}
                   style={{ width: 250, height: 250 }}
-                />
+                /> */}
               </View>
             )}
             contentContainerStyle={{ paddingBottom: 32 }}
